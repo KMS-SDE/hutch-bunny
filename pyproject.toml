@@ -1,0 +1,38 @@
+[project]
+name = "hutch-bunny"
+version = "1.0.0-alpha.1"
+description = "A Cohort Discovery Task API worker"
+license = { text = "MIT License" }
+readme = "README.md"
+authors = [
+  { name = "Jon Couldridge", email = "jonathan.couldridge@nottingham.ac.uk" },
+  { name = "Daniel Lea", email = "daniel.lea@nottingham.ac.uk" },
+  { name = "Tri Thien Nguyen", email = "thien.nguyen1@nottingham.ac.uk" },
+  { name = "James Mitchell-White", email = "james.mitchell-white1@nottingham.ac.uk" },
+  { name = "Anwar Gaungoo", email = "anwar.gaungoo@nottingham.ac.uk" },
+]
+maintainers = [
+  { name = "Jon Couldridge", email = "jonathan.couldridge@nottingham.ac.uk" },
+]
+requires-python = ">=3.13"
+dependencies = [
+  "numpy>=2.2.1",
+  "pandas>=2.2.3",
+  "psycopg[binary]>=3.2.3",
+  "requests>=2.32.3", # daemon-only
+  "sqlalchemy>=2.0.36",
+  # possible extras?
+  # "pyodbc>=5.2.0",      # not sure exactly when this is or isn't needed?
+  # mysqlclient="^2.1.1" # should be only when targeting mysql - seems to have system dependencies
+  # TODO: sqlserver driver for sqlalchemy
+]
+
+[project.scripts]
+bunny = "hutch_bunny:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["ruff>=0.8.6", "pytest>=8.3.4"]
