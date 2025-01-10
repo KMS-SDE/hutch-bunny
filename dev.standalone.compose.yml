@@ -1,0 +1,22 @@
+name: hutch-bunny-standalone-dev
+
+services:
+  bunny:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATASOURCE_DB_USERNAME: postgres
+      DATASOURCE_DB_PASSWORD: postgres
+      DATASOURCE_DB_DATABASE: hutch-omop
+      DATASOURCE_DB_SCHEMA: public
+      DATASOURCE_DB_PORT: 5432
+      DATASOURCE_DB_HOST: host.docker.internal
+      TASK_API_BASE_URL: https://<task_api_host>/link_connector_api
+      TASK_API_USERNAME: username
+      TASK_API_PASSWORD: password
+      COLLECTION_ID: collection_id
+      TASK_API_TYPE: a
+      LOW_NUMBER_SUPPRESSION_THRESHOLD:
+      ROUNDING_TARGET:
+      POLLING_INTERVAL: 5

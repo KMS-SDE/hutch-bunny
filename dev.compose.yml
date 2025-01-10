@@ -1,0 +1,76 @@
+name: hutch-bunny-dev
+
+services:
+  db:
+    image: postgres:16
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  adminer:
+    image: wodby/adminer
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - 9000:9000
+    environment:
+      ADMINER_DEFAULT_DB_DRIVER: pgsql
+      ADMINER_DEFAULT_DB_HOST: db
+      ADMINER_DESIGN: pepa-linha
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+
+  relay:
+    image: ghcr.io/health-informatics-uon/hutch/relay:dev-latest
+    depends_on:
+      - rabbitmq
+      - db
+    restart: always
+    ports:
+      - 8080:8080
+      - 8081:8081
+    environment:
+      DOTNET_Environment: Development
+      ConnectionStrings__Default: Server=db;Port=5432;Database=hutch-relay;User Id=postgres;Password=postgres
+      RelayTaskQueue__ConnectionString: amqp://user:password@rabbitmq:5672
+      Obfuscation__LowNumberSuppressionThreshold: 0
+      Obfuscation__RoundingTarget: 0
+      UpstreamTaskApi__BaseUrl: https://<task_api_host>
+      UpstreamTaskApi__CollectionId: collection_id
+      UpstreamTaskApi__Username: username
+      UpstreamTaskApi__Password: password
+      Database__ApplyMigrationsOnStartup: true
+
+  bunny:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - relay
+    restart: always
+    environment:
+      DATASOURCE_DB_USERNAME: postgres
+      DATASOURCE_DB_PASSWORD: postgres
+      DATASOURCE_DB_DATABASE: hutch-omop
+      DATASOURCE_DB_DRIVERNAME: postgresql
+      DATASOURCE_DB_SCHEMA: public
+      DATASOURCE_DB_PORT: 5432
+      DATASOURCE_DB_HOST: db
+      TASK_API_BASE_URL: http://relay:8080/
+      TASK_API_USERNAME: username
+      TASK_API_PASSWORD: password
+      LOW_NUMBER_SUPPRESSION_THRESHOLD:
+      ROUNDING_TARGET:
+      POLLING_INTERVAL: 5
+      COLLECTION_ID: collection_id
