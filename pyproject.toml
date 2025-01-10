@@ -19,8 +19,10 @@ dependencies = [
   "numpy>=2.2.1",
   "pandas>=2.2.3",
   "psycopg[binary]>=3.2.3",
+  "python-dotenv>=1.0.1",
   "requests>=2.32.3", # daemon-only
   "sqlalchemy>=2.0.36",
+  "trino>=0.331.0", # should become optional
   # possible extras?
   # "pyodbc>=5.2.0",      # not sure exactly when this is or isn't needed?
   # mysqlclient="^2.1.1" # should be only when targeting mysql - seems to have system dependencies
@@ -28,7 +30,8 @@ dependencies = [
 ]
 
 [project.scripts]
-bunny = "hutch_bunny:main"
+bunny = "hutch_bunny.cli:main"
+bunny-daemon = "hutch_bunny.daemon:main"
 
 [build-system]
 requires = ["hatchling"]
