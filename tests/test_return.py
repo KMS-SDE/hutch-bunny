@@ -1,11 +1,9 @@
 import pytest
 from hutch_bunny.core.query_solvers import (
     AvailabilityQuery,
-    DistributionQuery,
     solve_availability,
 )
 from hutch_bunny.core.db_manager import SyncDBManager
-from hutch_bunny.core.rquest_dto import cohort
 from hutch_bunny.core.rquest_dto.result import RquestResult
 from hutch_bunny.core.rquest_dto.cohort import Cohort
 from hutch_bunny.core.rquest_dto.group import Group
