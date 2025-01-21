@@ -1,3 +1,4 @@
+import logging
 from os import environ
 from dotenv import load_dotenv
 
@@ -22,6 +23,7 @@ DEFAULT_DB_DRIVER = DEFAULT_POSTGRES_DRIVER
 
 # Logging configuration
 LOGGER_NAME = "hutch"
+LOGGER_LEVEL = logging.getLevelNamesMapping().get(environ.get("BUNNY_LOGGER_LEVEL"),"INFO")
 BACKUP_LOGGER_NAME = "backup"
 MSG_FORMAT = "%(levelname)s - %(asctime)s - %(message)s"
 DATE_FORMAT = "%d-%b-%y %H:%M:%S"
